@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 
+	"grpc-demo/internal/server"
 	helloworldpb "grpc-demo/proto/helloworld"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime" // 注意v2版本
@@ -13,17 +14,17 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type server struct {
-	helloworldpb.UnimplementedGreeterServer
-}
+// type server struct {
+// 	helloworldpb.UnimplementedGreeterServer
+// }
 
-func NewServer() *server {
-	return &server{}
-}
+// func NewServer() *server {
+// 	return &server{}
+// }
 
-func (s *server) SayHello(ctx context.Context, in *helloworldpb.HelloRequest) (*helloworldpb.HelloReply, error) {
-	return &helloworldpb.HelloReply{Message: in.Name + " world"}, nil
-}
+// func (s *server) SayHello(ctx context.Context, in *helloworldpb.HelloRequest) (*helloworldpb.HelloReply, error) {
+// 	return &helloworldpb.HelloReply{Message: in.Name + " world"}, nil
+// }
 
 const (
 	ListenAddr = ":8890"
@@ -40,7 +41,7 @@ func main() {
 	// 创建一个gRPC server对象
 	s := grpc.NewServer()
 	// 注册Greeter service到server
-	helloworldpb.RegisterGreeterServer(s, &server{})
+	helloworldpb.RegisterGreeterServer(s, &server.GreeterServer{})
 	// 8080端口启动gRPC Server
 	log.Println("Serving gRPC on ", ListenAddr)
 	go func() {

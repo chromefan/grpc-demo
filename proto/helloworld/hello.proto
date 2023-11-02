@@ -17,6 +17,12 @@ service Greeter {
       body: "*"
     };
   }
+  rpc TestEndpoint (TestRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/example/test"
+      body: "*"
+    };
+  }
 }
 
 // 定义请求的message
@@ -27,4 +33,7 @@ message HelloRequest {
 // 定义响应的message
 message HelloReply {
   string message = 1;
+}
+message TestRequest {
+  int32 number = 1;
 }
